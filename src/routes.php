@@ -33,7 +33,7 @@ class Twin extends Illuminate\Database\Eloquent\Model {
 $app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
 
     $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
-    $pic = Pic::find($idDev); //Busca todas las fotos del dispositivo.
+    $pic = Pic::where('deviceId','=',$idDev)->get(); //Busca todas las fotos del dispositivo.
 
     return $response->withJson($pic,200,JSON_PRETTY_PRINT);
 
@@ -44,15 +44,15 @@ $app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
 //Método que permite obtener una twin mandando su identificador.
 $app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
 
-    //$idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
-    //$pic = Twin::find($idDev); //Busca todas las fotos del dispositivo.
-    //return $response->withJson($pic,200,JSON_PRETTY_PINT);
+    $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
+    $pic = Twin::where('deviceId','=',$idDev)->get(); //Busca todas las fotos del dispositivo.
+    return $response->withJson($pic,200,JSON_PRETTY_PRINT);
     return;
 
 });
 
-//Método que prueba la subida de una Pic para cierto dispositivo.
-$app->get('/test/pic/subir/[?id={name}]', function ($request, $response, $args) {
+//Método que sube una Pic para cierto dispositivo.
+$app->get('/pics/subir/[?id={name}]', function ($request, $response, $args) {
 
     $idDev = $_GET["id"]; //Se obtiene el identificador del dispositivo.
     $pic = new Pic; //Se crea un objeto de tipo Pic.
@@ -67,7 +67,9 @@ $app->get('/test/pic/subir/[?id={name}]', function ($request, $response, $args) 
     $pic->warning = 0; //Cantidad de advertencias.
     $pic->save(); //Se guarda en la tabla Pic
 
-    $pic2 = Pic::find($idDev); //Busca todas las fotos para el dispositivo.
+    $fecha = $pic->date;
+
+    $pic2 = Pic::where('deviceId','=',$idDev)->where('date','=',$fecha)->get(); //Busca todas las fotos para el dispositivo en tal fecha.
     return $response->withJson($pic2,200,JSON_PRETTY_PRINT);
 
 });
