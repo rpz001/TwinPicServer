@@ -41,12 +41,10 @@ $app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
 
 
 
-//Método que permite obtener una twin mandando su identificador.
+//Método que permite obtener todas las Twins asociada a un dispositivo.
 $app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
 
     $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
-    $pic = Twin::where('deviceId','=',$idDev)->get(); //Busca todas las fotos del dispositivo.
-    return $response->withJson($pic,200,JSON_PRETTY_PRINT);
     return;
 
 });
@@ -74,11 +72,22 @@ $app->get('/pics/subir/[?id={name}]', function ($request, $response, $args) {
 
 });
 
-//Método que prueba la subida de una Pic para cierto dispositivo.
-$app->get('/test/twin/subir/[{name}]', function ($request, $response, $args) {
+//Método que prueba la subida de una Twin para cierto dispositivo.
+$app->get('/twin/subir/[?info={name}]', function ($request, $response, $args) {
 
-    //Por implementar.
+    $datos = $_GET["info"];
+    $token = strtok($datos,",");
 
+    $idPicLocal = $token; //Dispositivo del usuario local.
+    $token = strtok(",");
+    $idPicRemote = $token; //Dispositivo del usuario remoto.
+
+    $twin = new Twin;
+    $twin->idLocal = $idPicLocal; //Se asocia la foto tomada desde mi celular.
+    $twin->idRemote = $idPicRemote; //Se asocia con la foto remota.
+    $twin->save(); //Se guarda en la tabla Twin.
+
+    $twin2 = Twin::where('idLocal','=',$idPicLocal);
     return;
 
 });
