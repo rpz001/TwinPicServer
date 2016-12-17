@@ -32,15 +32,21 @@ class Twin extends Illuminate\Database\Eloquent\Model {
 //Método que permite obtener una pic mandando su identificador.
 $app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
 
-    $idPic = $_GET['id'];
-    return;
+    $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
+    $pic = Pic::find($idDev); //Busca todas las fotos del dispositivo.
+
+    return $response->withJson($pic,200,JSON_PRETTY_PINT);
 
 });
+
+
 
 //Método que permite obtener una twin mandando su identificador.
 $app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
 
-    $idTwin = $_GET['id'];
+    //$idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
+    //$pic = Twin::find($idDev); //Busca todas las fotos del dispositivo.
+    //return $response->withJson($pic,200,JSON_PRETTY_PINT);
     return;
 
 });
@@ -61,7 +67,7 @@ $app->get('/test/pic/subir/[?id={name}]', function ($request, $response, $args) 
     $pic->warning = 0; //Cantidad de advertencias.
     $pic->save(); //Se guarda en la tabla Pic
 
-    $pic2 = Pic::find($idDev); //Busca todas las fotos para un dispositivo.
+    $pic2 = Pic::find($idDev); //Busca todas las fotos para el dispositivo.
     return $response->withJson($pic2,200,JSON_PRETTY_PINT);
 
 });
