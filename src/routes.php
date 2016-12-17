@@ -1,31 +1,6 @@
 <?php
 // Routes
 
-//Método que permite imprimir texto en una página.
-$app->get('/[{name}]', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-});
-
-//Método que permite obtener una pic mandando su identificador.
-$app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
-
-    echo $_GET['id']; //Se despliega el parametro.
-    return;
-
-});
-
-//Método que permite obtener una twin mandando su identificador.
-$app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
-
-    echo $_GET['id']; //Se despliega el parametro.
-    return;
-
-});
-
 //Clase que representa una Pic.
 class Pic extends Illuminate\Database\Eloquent\Model {
 
@@ -54,24 +29,59 @@ class Twin extends Illuminate\Database\Eloquent\Model {
 
 }
 
-$app->get('/pic/subir/[{name}]', function ($request, $response, $args) {
+//Método que permite obtener una pic mandando su identificador.
+$app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
 
+    $idPic = $_GET['id'];
+    return;
+
+});
+
+//Método que permite obtener una twin mandando su identificador.
+$app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
+
+    $idTwin = $_GET['id'];
+    return;
+
+});
+
+//Método que prueba la subida de una Pic para cierto dispositivo.
+$app->get('/test/pic/subir/[?id={name}]', function ($request, $response, $args) {
+
+    $idDev = $_GET["id"]; //Se obtiene el identificador del dispositivo.
     $pic = new Pic; //Se crea un objeto de tipo Pic.
 
-    //Se establecen los valores iniciales para sus atributos.
-    $pic->deviceId = "dev1";
-    $pic->date = 101216;
-    $pic->url = "Mi url 1";
-    $pic->longitude = -23;
-    $pic->latitude = 70;
-    $pic->positive = 0;
-    $pic->negative = 0;
-    $pic->warning = 0;
-
+    $pic->deviceId = $idDev; //El id del celular.
+    $pic->date = date('c'); //Fecha que se tomo la foto.
+    $pic->url = "Esta es una prueba"; //Url donde se aloja la foto
+    $pic->longitude = -23.123; //Posición en longitud del planeta.
+    $pic->latitude = -70.343; //Posición en latitud del planeta.
+    $pic->positive = 0; //Cantidad de likes.
+    $pic->negative = 0; //Cantidad de dislikes.
+    $pic->warning = 0; //Cantidad de advertencias.
     $pic->save(); //Se guarda en la tabla Pic
-    $pics = Pic::all();
 
-    return $response->withJson($pics,200,JSON_PRETTY_PINT);
+    $pic2 = Pic::find($idDev); //Busca todas las fotos para un dispositivo.
+    return $response->withJson($pic2,200,JSON_PRETTY_PINT);
+
+});
+
+//Método que prueba la subida de una Pic para cierto dispositivo.
+$app->get('/test/twin/subir/[{name}]', function ($request, $response, $args) {
+
+    //Por implementar.
+
+    return;
+
+});
+
+//Método que permite imprimir texto en una página.
+$app->get('/[{name}]', function ($request, $response, $args) {
+    // Sample log message
+    $this->logger->info("Slim-Skeleton '/' route");
+
+    // Render index view
+    return $this->renderer->render($response, 'index.phtml', $args);
 
 });
 
