@@ -93,24 +93,3 @@ $app->get('/twins/subir/[?info={name}]', function ($request, $response, $args) {
 
 });
 
-//Método que permite imprimir texto en una página.
-$app->get('/[{name}]', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-
-});
-
-$app->get('/json/test', function ($request, $response, $args) {
-
-    $order = Order::first();
-    $order->title = "Titulo de la orden";
-    $order->save();
-
-    $data = array('name' => 'Rob', 'age' => 40);
-
-    return $response->withJson(Order::first()->toArray());
-
-});
