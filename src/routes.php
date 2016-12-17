@@ -1,6 +1,7 @@
 <?php
 // Routes
 
+//Método que permite imprimir texto en una página.
 $app->get('/[{name}]', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
@@ -9,12 +10,21 @@ $app->get('/[{name}]', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
+//Método que permite obtener una pic mandando su identificador.
+$app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
 
-class Order extends Illuminate\Database\Eloquent\Model {
+    echo $_GET['id']; //Se despliega el parametro.
+    return;
 
-    protected $fillable = ['title'];
-    public $timestamps = false;
-}
+});
+
+//Método que permite obtener una twin mandando su identificador.
+$app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
+
+    echo $_GET['id']; //Se despliega el parametro.
+    return;
+
+});
 
 //Clase que representa una Pic.
 class Pic extends Illuminate\Database\Eloquent\Model {
@@ -22,11 +32,25 @@ class Pic extends Illuminate\Database\Eloquent\Model {
     //Se especifica la tabla donde se guardan las pics.
     protected $table = 'pics';
 
-    //Se suprime las fechas para no agregar a las tabla.
+    //Se suprime las fechas para no agregar a la tabla.
     public $timestamps = false;
 
-    //Se especifica los atributos en un arreglo.
+    //Se especifica los atributos de la clase en un arreglo.
     protected $fillable = ['deviceId','date','url','latitude','longitude','positive','negative','warning'];
+
+}
+
+//Clase que representa una Twin
+class Twin extends Illuminate\Database\Eloquent\Model {
+
+    //Se especifica la tabla donde se guardan las pics.
+    protected $table = 'twins';
+
+    //Se suprime las fechas para no agregar a la tabla.
+    public $timestamps = false;
+
+    //Se especifica los atributos de la clase en un arreglo.
+    protected $fillable = ['id','idLocal','idRemote'];
 
 }
 
