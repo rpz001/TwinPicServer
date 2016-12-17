@@ -35,7 +35,7 @@ $app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
     $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
     $pic = Pic::find($idDev); //Busca todas las fotos del dispositivo.
 
-    return $response->withJson($pic,200,JSON_PRETTY_PINT);
+    return $response->withJson($pic,200,JSON_PRETTY_PRINT);
 
 });
 
@@ -68,7 +68,7 @@ $app->get('/test/pic/subir/[?id={name}]', function ($request, $response, $args) 
     $pic->save(); //Se guarda en la tabla Pic
 
     $pic2 = Pic::find($idDev); //Busca todas las fotos para el dispositivo.
-    return $response->withJson($pic2,200,JSON_PRETTY_PINT);
+    return $response->withJson($pic2,200,JSON_PRETTY_PRINT);
 
 });
 
