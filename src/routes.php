@@ -93,3 +93,39 @@ $app->get('/twins/subir/[?info={name}]', function ($request, $response, $args) {
 
 });
 
+//Método que permite darle un like a una Pic.
+$app->get('/pics/like/[?id={name}]', function ($request, $response, $args) {
+
+    $idPic = $_GET["id"]; //Se obtiene el identificador de la Pic.
+    $pic = Pic::where('id','=',$idPic)->first();
+    $cantLikes = ($pic->positive) + 1;
+    $pic->positive = $cantLikes;
+    $pic->save();
+    return;
+
+});
+
+//Método que permite darle un dislike a una Pic.
+$app->get('/pics/dislike/[?id={name}]', function ($request, $response, $args) {
+
+    $idPic = $_GET["id"]; //Se obtiene el identificador de la Pic.
+    $pic = Pic::where('id','=',$idPic)->first();
+    $cantDislikes = ($pic->negative) + 1;
+    $pic->negative = $cantDislikes;
+    $pic->save();
+    return;
+
+});
+
+//Método que permite darle un warning a una Pic.
+$app->get('/pics/warning/[?id={name}]', function ($request, $response, $args) {
+
+    $idPic = $_GET["id"]; //Se obtiene el identificador de la Pic.
+    $pic = Pic::where('id','=',$idPic)->first();
+    $cantWarnings = ($pic->warning) + 1;
+    $pic->warning = $cantWarnings;
+    $pic->save();
+    return;
+
+});
+
