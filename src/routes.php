@@ -30,21 +30,47 @@ class Twin extends Illuminate\Database\Eloquent\Model {
 }
 
 //Método que permite obtener una pic mandando su identificador.
-$app->get('/pics/obtener/[?id={name}]', function ($request, $response, $args) {
+$app->get('/json/obtener/pic/[?id={id}]', function ($request, $response, $args) {
 
-    $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
-    $pic = Pic::where('deviceId','=',$idDev)->get(); //Busca todas las fotos del dispositivo.
+    $idPic = $_GET['id']; //Se obtiene el identificador de la Pic.
+    $pic = Pic::where('id','=',$idPic)->get(); //Busca todas las fotos del dispositivo.
 
     return $response->withJson($pic,200,JSON_PRETTY_PRINT);
 
 });
 
+//Método que permite obtener una twin mandando su identificador.
+$app->get('/json/obtener/twin/[?id={id}]', function ($request, $response, $args) {
 
+    $idTwin = $_GET['id']; //Se obtiene el identificador de la Pic.
+    $pic = Twin::where('id','=',$idTwin)->get(); //Busca todas las fotos del dispositivo.
+
+    return $response->withJson($pic,200,JSON_PRETTY_PRINT);
+
+});
+
+//Método que permite obtener todas las pics de la base de datos.
+$app->get('/json/obtener/piclist', function ($request, $response, $args) {
+
+    $pic = Pic::select()->get();
+
+    return $response->withJson($pic,200,JSON_PRETTY_PRINT);
+
+});
+
+//Método que permite obtener todas las twins de la base de datos.
+$app->get('/json/obtener/twinlist', function ($request, $response, $args) {
+
+    $pic = Twin::select()->get();
+
+    return $response->withJson($pic,200,JSON_PRETTY_PRINT);
+
+});
 
 //Método que permite obtener todas las Twins asociada a un dispositivo.
-$app->get('/twins/obtener/[?id={name}]', function ($request, $response, $args) {
+$app->get('/json/obtener/twin/twinlist/[?devid={devid}]', function ($request, $response, $args) {
 
-    $idDev = $_GET['id']; //Se obtiene el identificador del dispositivo.
+    $idDev = $_GET['devid']; //Se obtiene el identificador del dispositivo.
     $twins = Twin::join('pics','idLocal','=','pics.id')->where('pics.deviceId','=',$idDev)->get();
     return $response->withJson($twins,200,JSON_PRETTY_PRINT);
 
@@ -126,6 +152,14 @@ $app->get('/pics/warning/[?id={name}]', function ($request, $response, $args) {
     $pic->warning = $cantWarnings;
     $pic->save();
     return;
+
+});
+
+//Método que permite obtener un twin.
+$app->get('/test', function ($request, $response, $args) {
+
+    $twin = Twin::where('id','=','1')->first();
+    return $response->withJson($twin,200,JSON_PRETTY_PRINT);;
 
 });
 
